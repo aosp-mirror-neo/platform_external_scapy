@@ -192,7 +192,10 @@ def get_alias_address(iface_name, ip_mask, gw_str, metric):
 
     # Extract interfaces names
     out = struct.unpack("iL", ifreq)[0]
-    names = names.tostring()
+    if hasattr(names, "tobytes"):
+        names = names.tobytes()
+    else:
+        names = names.tostring()
     names = [names[i:i+offset].split(b'\0', 1)[0] for i in range(0, out, name_len)]
 
     # Look for the IP address
